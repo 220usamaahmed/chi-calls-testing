@@ -1,5 +1,11 @@
 import puppeteer from 'puppeteer';
 
+function delay(time) {
+    return new Promise(function(resolve) { 
+        setTimeout(resolve, time)
+    });
+ }
+
 async function run() {
     const browser = await puppeteer.launch(
         {
@@ -17,7 +23,7 @@ async function run() {
     const startVideoButton = await page.$('#btnJoinCall')
     startVideoButton.click()
 
-    await page.waitForTimeout(10000);
+    await delay(30000);
 
     const endCallButton = await page.$('#btn-leave-call')
     endCallButton.click()
