@@ -13,22 +13,29 @@ async function run() {
         }
     );
 
-    const page = await browser.newPage();
-    await page.goto("https://kms-01.cognitivehealthintl.com/demo/");
-    
-    const roomInput = await page.$('#room_id');
-    await roomInput.click({ clickCount: 3 });
-    await roomInput.type('bot-test-2');
+    let pages = []
 
-    const startVideoButton = await page.$('#btnJoinCall')
-    startVideoButton.click()
+    for (let i = 0; i < 4; i++) {
+        pages.push(await browser.newPage());
+        await pages[i].goto("https://kms-01.cognitivehealthintl.com/demo/");
+        
+        const roomInput = await pages[i].$('#room_id');
+        await roomInput.click({ clickCount: 3 });
+        await roomInput.type('bot-test-2');
+
+        const startVideoButton = await pages[i].$('#btnJoinCall')
+        startVideoButton.click()
+    }
 
     await delay(30000);
 
-    const endCallButton = await page.$('#btn-leave-call')
-    endCallButton.click()
+    for (let i = 0; i < 2; i++) {
+        const endCallButton = await pages[i].$('#btn-leave-call')
+        endCallButton.click()
+    }
 
     browser.close()
 }
 
 run();
+
